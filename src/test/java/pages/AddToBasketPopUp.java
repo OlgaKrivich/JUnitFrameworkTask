@@ -19,4 +19,6 @@ public class AddToBasketPopUp {
     public AddToBasketPopUp(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
+
+
 }

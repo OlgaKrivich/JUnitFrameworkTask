@@ -1,10 +1,12 @@
 package tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.AddToBasketPopUp;
 import pages.BasketPage;
 import pages.HomePage;
@@ -13,9 +15,10 @@ import pages.PaymentPage;
 public class AppTest {
 
     @Test
-    public void verifyAddProductToBasket() {
-        WebDriverManager.chromedriver().setup();
+    public void verifyAddProductToBasket() throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
+        WebDriverWait wait = new WebDriverWait(driver, 1000);
         driver.manage().window().maximize();
         driver.get("https://www.bookdepository.com/");
 
@@ -25,10 +28,15 @@ public class AppTest {
         PaymentPage paymentPage = new PaymentPage(driver);
 
         homePage.clickAddToBasketButton();
-        addToBasketPopUp.clickCheckoutButton();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='modal-body']//a[@href='/basket']")));
         Assertions.assertEquals(basketPage.getTotalCost(), "10,17 €");
+        addToBasketPopUp.clickCheckoutButton();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//div[@class='checkout-head-wrap']//a[@href='/payment/guest']")));
         basketPage.clickBasketCheckoutButton();
-        paymentPage.enterEmailAddress("test@user.com");
+        Assertions.assertEquals(paymentPage.getTotalPrice(), "10,17 €");
 
         driver.quit();
     }
