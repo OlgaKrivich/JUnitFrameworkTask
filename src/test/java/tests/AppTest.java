@@ -15,7 +15,7 @@ import pages.PaymentPage;
 public class AppTest {
 
     @Test
-    public void verifyAddProductToBasket() throws InterruptedException {
+    public void verifyAddProductToBasket() {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, 1000);
