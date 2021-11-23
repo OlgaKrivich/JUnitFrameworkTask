@@ -7,14 +7,17 @@ import org.openqa.selenium.support.PageFactory;
 
 public class PaymentPage {
 
-    @FindBy(xpath = "//div[@class='mini-basket']//dl[@class='order-summary-last-dl']/dd")
-    private WebElement totalPrice;
+    public static final String email = "test@user.com";
+
+    @FindBy(xpath = "//input[@name='emailAddress']")
+    private WebElement emailField;
 
     public PaymentPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
-    public String getTotalPrice() {
-        return totalPrice.getText();
+    public void fillEmailField(String email) {
+        emailField.sendKeys(email);
     }
+
 }
